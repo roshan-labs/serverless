@@ -1,0 +1,25 @@
+component: scf
+name: nuxt3-serverless
+
+inputs:
+  src:
+    src: ./.output
+    hook: npm run build
+  type: web
+  entryFile: ./server/index.mjs
+  runtime: Nodejs16.13
+  environment:
+    variables:
+      PORT: 9000
+  events:
+    - apigw:
+        parameters:
+          serviceName: nuxt3_serverless_ssr
+          protocols:
+            - http
+          netTypes:
+            - OUTER
+          environment: release
+          endpoints:
+            - path: /
+              method: ANY
